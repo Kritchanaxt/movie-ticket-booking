@@ -8,8 +8,6 @@ export interface BookingState {
   date: string;
   time: string;
   seats: string[];
-  pricePerSeat: number;
-  serviceCharge: number;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -18,7 +16,6 @@ export interface BookingState {
 interface BookingContextType {
   booking: BookingState;
   updateBooking: (data: Partial<BookingState>) => void;
-  calculateTotal: () => number;
   resetBooking: () => void;
 }
 
@@ -30,8 +27,6 @@ const initialState: BookingState = {
   date: "",
   time: "",
   seats: [],
-  pricePerSeat: 180,
-  serviceCharge: 20,
   customerName: "",
   customerEmail: "",
   customerPhone: "",
@@ -44,17 +39,12 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     setBooking((prev) => ({ ...prev, ...data }));
   };
 
-  const calculateTotal = () => {
-    const seatTotal = booking.seats.length * booking.pricePerSeat;
-    return seatTotal > 0 ? seatTotal + booking.serviceCharge : 0;
-  };
-
   const resetBooking = () => {
     setBooking(initialState);
   };
 
   return (
-    <BookingContext.Provider value={{ booking, updateBooking, calculateTotal, resetBooking }}>
+    <BookingContext.Provider value={{ booking, updateBooking, resetBooking }}>
       {children}
     </BookingContext.Provider>
   );

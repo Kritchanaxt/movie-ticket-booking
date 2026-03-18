@@ -12,7 +12,7 @@ const UNAVAILABLE_SEATS = ["A5", "B5", "B6", "C8", "C9", "C10"];
 
 export default function SelectPage() {
   const router = useRouter();
-  const { booking, updateBooking, calculateTotal } = useBooking();
+  const { booking, updateBooking } = useBooking();
 
   const handleSeatClick = (seatId: string) => {
     if (UNAVAILABLE_SEATS.includes(seatId)) return;

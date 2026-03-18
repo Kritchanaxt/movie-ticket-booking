@@ -2,31 +2,36 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const bookingData = await request.json();
     
-    // ตรงนี้นำ Web App URL ของ Google Apps Script ที่ได้จากการ Publish มาใส่
-    // ตัวอย่างเช่น: const GOOGLE_SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfyc.../exec";
-    const GOOGLE_SHEETS_WEB_APP_URL = process.env.GOOGLE_SHEETS_WEB_APP_URL || "";
+    // ดึง Web App URL จาก Environment Variables (.env.local) แทนเพื่อความปลอดภัย
+    const GOOGLE_SHEETS_WEB_APP_URL = process.env.GOOGLE_SHEETS_WEB_APP_URL;
 
     if (!GOOGLE_SHEETS_WEB_APP_URL) {
-      // Mockup success response ถ้ายังไม่ได้ใส่ URL
-      console.log("Mock saving to Google Sheets:", body);
-      return NextResponse.json({ success: true, message: "Mock saved" }, { status: 200 });
+      throw new Error("Missing GOOGLE_SHEETS_WEB_APP_URL in environment variables");
     }
+
+    // จัดโครงสร้างให้ตรงกับที่ Apps Script รอรับ (ลบราคาออกแล้ว)
+    const payload = {
+      customerName: bookingData.customerName,
+      customerEmail: bookingData.customerEmail,
+      // บังคับให้เบอร์เป็น string โดยเติมนำหน้าด้วยเครื่องหมาย ' (single quote) เพื่อให้ Google Sheets มองเป็น text เสมอ
+      customerPhone: `'${bookingData.customerPhone}`,
+      movieTitle: bookingData.movieTitle,
+      date: bookingData.date,
+      time: bookingData.time,
+      seats: bookingData.seats
+    };
 
     const response = await fetch(GOOGLE_SHEETS_WEB_APP_URL, {
       method: "POST",
-      headers: {
-         "Content-Type": "application/json",
-      },
-      // ส่งข้อมูลไปยัง Google Apps script
-      body: JSON.stringify(body),
+      body: JSON.stringify(payload),
     });
 
     if (response.ok) {
       return NextResponse.json({ success: true }, { status: 200 });
     } else {
-      throw new Error("Failed to save to Google Sheets");
+      throw new Error(`Failed to save to Google Sheets: ${response.status}`);
     }
 
   } catch (error) {

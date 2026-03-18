@@ -11,7 +11,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function DetailPage() {
   const router = useRouter();
-  const { booking, calculateTotal } = useBooking();
+  const { booking } = useBooking();
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {

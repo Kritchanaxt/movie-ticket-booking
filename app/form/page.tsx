@@ -50,7 +50,7 @@ export default function FormPage() {
           <label className="text-sm font-medium text-zinc-500 dark:text-zinc-400 ml-1">ชื่อ-นามสกุล</label>
           <Input 
             placeholder="กรอกชื่อ-นามสกุล" 
-            value={booking.customerName}
+            value={booking.customerName || ""}
             onChange={(e) => updateBooking({ customerName: e.target.value })}
             className="bg-white dark:bg-zinc-900/50 border-zinc-300 shadow-sm dark:border-zinc-800 h-12 focus:ring-[#10b981]/50 focus:border-[#10b981] text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
@@ -61,7 +61,7 @@ export default function FormPage() {
           <Input 
             type="email"
             placeholder="example@email.com" 
-            value={booking.customerEmail}
+            value={booking.customerEmail || ""}
             onChange={(e) => updateBooking({ customerEmail: e.target.value })}
             className="bg-white dark:bg-zinc-900/50 border-zinc-300 shadow-sm dark:border-zinc-800 h-12 focus:ring-[#10b981]/50 focus:border-[#10b981] text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
@@ -72,7 +72,7 @@ export default function FormPage() {
           <Input 
             type="tel"
             placeholder="08X-XXX-XXXX" 
-            value={booking.customerPhone}
+            value={booking.customerPhone || ""}
             onChange={(e) => updateBooking({ customerPhone: e.target.value })}
             className="bg-white dark:bg-zinc-900/50 border-zinc-300 shadow-sm dark:border-zinc-800 h-12 focus:ring-[#10b981]/50 focus:border-[#10b981] text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
