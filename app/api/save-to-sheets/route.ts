@@ -4,7 +4,7 @@ export async function POST(request: Request) {
   try {
     const bookingData = await request.json();
     
-    // ดึง Web App URL จาก Environment Variables (.env.local) แทนเพื่อความปลอดภัย
+    // ดึง Web App URL จาก Environment Variables (.env) แทนเพื่อความปลอดภัย
     const GOOGLE_SHEETS_WEB_APP_URL = process.env.GOOGLE_SHEETS_WEB_APP_URL;
 
     if (!GOOGLE_SHEETS_WEB_APP_URL) {

@@ -1,21 +1,46 @@
 "use client";
 
-import { ChevronLeft, User, Armchair, Check } from "lucide-react";
+import { ChevronLeft, User, Armchair, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useBooking } from "../context/BookingContext";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useEffect, useState } from "react";
 
 const ROWS = ["A", "B", "C", "D", "E"];
 const COLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const UNAVAILABLE_SEATS = ["A5", "B5", "B6", "C8", "C9", "C10"];
 
 export default function SelectPage() {
   const router = useRouter();
   const { booking, updateBooking } = useBooking();
+  const [unavailableSeats, setUnavailableSeats] = useState<string[]>([]);
+  const [isLoadingSeats, setIsLoadingSeats] = useState(true);
+
+  // ดึงข้อมูลที่นั่งที่ถูกจองไปแล้วจาก Google Sheets มาอัปเดตแบบ Realtime (ตอนโหลดหน้า)
+  useEffect(() => {
+    const fetchBookedSeats = async () => {
+      try {
+        // เพิ่ม timestamp หรือ { cache: 'no-store' } ป้องกัน browser จำค่าเก่า
+        const res = await fetch(`/api/seats?t=${new Date().getTime()}`, { 
+          cache: "no-store" 
+        });
+        if (res.ok) {
+          const data = await res.json();
+          // นำที่นั่งที่จองใน Sheets มาใส่ใน state
+          setUnavailableSeats(data.bookedSeats || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch seats:", error);
+      } finally {
+        setIsLoadingSeats(false);
+      }
+    };
+
+    fetchBookedSeats();
+  }, []);
 
   const handleSeatClick = (seatId: string) => {
-    if (UNAVAILABLE_SEATS.includes(seatId)) return;
+    if (unavailableSeats.includes(seatId)) return;
     
     const isSelected = booking.seats.includes(seatId);
     let newSeats;
@@ -36,7 +61,10 @@ export default function SelectPage() {
           <button onClick={() => router.push("/")} className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <h2 className="text-xl font-bold ml-2">เลือกที่นั่ง</h2>
+          <div className="flex items-center">
+            <h2 className="text-xl font-bold ml-2">เลือกที่นั่ง</h2>
+            {isLoadingSeats && <Loader2 className="w-4 h-4 ml-3 animate-spin text-zinc-400" />}
+          </div>
         </div>
         <ThemeToggle />
       </div>
@@ -56,7 +84,7 @@ export default function SelectPage() {
               {COLS.slice(0, 5).map((col) => {
                 const seatId = `${row}${col}`;
                 const isSelected = booking.seats.includes(seatId);
-                const isUnavailable = UNAVAILABLE_SEATS.includes(seatId);
+                const isUnavailable = unavailableSeats.includes(seatId);
 
                 return (
                   <button
@@ -96,7 +124,7 @@ export default function SelectPage() {
               {COLS.slice(5, 10).map((col) => {
                 const seatId = `${row}${col}`;
                 const isSelected = booking.seats.includes(seatId);
-                const isUnavailable = UNAVAILABLE_SEATS.includes(seatId);
+                const isUnavailable = unavailableSeats.includes(seatId);
 
                 return (
                   <button

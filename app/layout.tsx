@@ -22,7 +22,7 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: "SCG Cinema Booking",
+  title: "จองที่นั่งเกมปล้นคนตาย",
   description: "จองตั๋วหนังง่ายๆ ผ่านมือถือ",
 };
 
