@@ -7,8 +7,10 @@ import { useBooking } from "../context/BookingContext";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useEffect, useState } from "react";
 
-const ROWS = ["A", "B", "C", "D", "E"];
-const COLS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const ZONE_A_ROWS = [7];
+const ZONE_C_ROWS = [7, 8, 6];
+const ZONE_B_ROWS = [7];
+const ZONE_D_ROWS = [8, 10, 5];
 
 export default function SelectPage() {
   const router = useRouter();
@@ -54,6 +56,33 @@ export default function SelectPage() {
     updateBooking({ seats: newSeats });
   };
 
+  const renderSeat = (seatId: string) => {
+    const isSelected = booking.seats.includes(seatId);
+    const isUnavailable = unavailableSeats.includes(seatId);
+
+    return (
+      <button
+        key={seatId}
+        disabled={isUnavailable}
+        onClick={() => handleSeatClick(seatId)}
+        className={`
+          w-[18px] h-[18px] sm:w-[28px] sm:h-[28px] md:w-[32px] md:h-[32px] lg:w-[42px] lg:h-[42px] rounded-[3px] sm:rounded-lg text-[5px] sm:text-[7px] md:text-[8px] lg:text-[10px] font-bold transition-all duration-200 border flex flex-col items-center justify-center shrink-0
+          ${isUnavailable
+            ? "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200 dark:bg-zinc-900 dark:text-zinc-600 dark:border-zinc-800"
+            : isSelected
+            ? "bg-[#10b981] text-white border-[#059669] shadow-[0_0_12px_rgba(16,185,129,0.5)] scale-125 relative z-10"
+            : "bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400"
+          }
+        `}
+      >
+        <div className="flex flex-col items-center justify-center">
+          <Armchair className={`w-[10px] h-[10px] sm:w-[14px] sm:h-[14px] md:w-[16px] md:h-[16px] lg:w-[20px] lg:h-[20px] shrink-0 ${isUnavailable ? "opacity-30" : ""}`} />
+          <span className="mt-[0.5px] leading-none tracking-tighter">{seatId}</span>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto p-4 animate-in slide-in-from-right-8 duration-300 flex flex-col items-center pb-32">
       <div className="w-full flex items-center justify-between mb-8 pt-4 px-2">
@@ -69,96 +98,84 @@ export default function SelectPage() {
         <ThemeToggle />
       </div>
 
-      <div className="w-full flex flex-col items-center mb-35">
-        <div className="w-[85%] sm:w-3/4 h-8 border-t-4 border-[#10b981]/50 rounded-t-[100%] shadow-[0_-10px_20px_rgba(16,185,129,0.1)]"></div>
+      <div className="w-full flex flex-col items-center mb-16 sm:mb-35">
+        <div className="w-[85%] sm:w-3/4 max-w-lg h-8 border-t-4 border-[#10b981]/50 rounded-t-[100%] shadow-[0_-10px_20px_rgba(16,185,129,0.1)]"></div>
         <p className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] font-medium mt-1">เวที</p>
       </div>
 
-      <div className="flex flex-col gap-2 sm:gap-3 w-full overflow-x-auto pb-6 px-1 no-scrollbar text-zinc-900 dark:text-white">
-        {ROWS.map((row) => (
-          <div key={row} className="flex justify-center gap-1.5 sm:gap-2 min-w-max mx-auto items-center">
-            <div className="w-5 flex items-center justify-center font-bold text-[10px] text-zinc-600 mr-2">{row}</div>
-            
-            {/* Left Block: Seats 1-5 */}
-            <div className="flex gap-1.5 sm:gap-2">
-              {COLS.slice(0, 5).map((col) => {
-                const seatId = `${row}${col}`;
-                const isSelected = booking.seats.includes(seatId);
-                const isUnavailable = unavailableSeats.includes(seatId);
-
-                return (
-                  <button
-                    key={seatId}
-                    disabled={isUnavailable}
-                    onClick={() => handleSeatClick(seatId)}
-                    className={`
-                      w-9 h-9 sm:w-11 sm:h-11 rounded-lg text-[9px] sm:text-xs font-bold transition-all duration-200 border flex flex-col items-center justify-center
-                      ${isUnavailable
-                        ? "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200 dark:bg-zinc-900 dark:text-zinc-600 dark:border-zinc-800"
-                        : isSelected
-                        ? "bg-[#10b981] text-white border-[#059669] shadow-[0_0_12px_rgba(16,185,129,0.5)] scale-110"
-                        : "bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400"
-                      }
-                    `}
-                  >
-                    {isUnavailable ? (
-                      <User className="w-5 h-5 sm:w-6 sm:h-6 opacity-40" />
-                    ) : isSelected ? (
-                      <Check className="w-5 h-5 sm:w-6 sm:h-6" />
-                    ) : (
-                      <>
-                        <Armchair className="w-5 h-5 sm:w-6 sm:h-6" />
-                        <span className="text-[7px] sm:text-[8px] mt-0.5">{seatId}</span>
-                      </>
-                    )}
-                  </button>
-                );
-              })}
+      <div className="w-full flex justify-center px-0.5 sm:px-2 text-zinc-900 dark:text-white pb-24">
+        <div className="flex flex-row gap-1.5 sm:gap-4 md:gap-8 w-full max-w-[1200px] justify-center items-start">
+          
+          {/* Left Side */}
+          <div className="flex flex-col gap-2 sm:gap-6 w-fit">
+            {/* Zone C */}
+            <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone C</h3>
+              <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
+                {ZONE_C_ROWS.map((count, rIdx) => {
+                  const startSeat = rIdx === 0 ? 1 : rIdx === 1 ? 8 : 16;
+                  const rowSeats = Array.from({ length: count }, (_, i) => startSeat + i);
+                  return (
+                    <div key={`C-${rIdx}`} className="flex justify-center gap-[2px] sm:gap-1 md:gap-1.5 w-full">
+                      {rowSeats.map((seatNum) => renderSeat(`C${seatNum}`))}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Aisle (Gap) */}
-            <div className="w-6 sm:w-12"></div>
-
-            {/* Right Block: Seats 6-10 */}
-            <div className="flex gap-1.5 sm:gap-2">
-              {COLS.slice(5, 10).map((col) => {
-                const seatId = `${row}${col}`;
-                const isSelected = booking.seats.includes(seatId);
-                const isUnavailable = unavailableSeats.includes(seatId);
-
-                return (
-                  <button
-                    key={seatId}
-                    disabled={isUnavailable}
-                    onClick={() => handleSeatClick(seatId)}
-                    className={`
-                      w-9 h-9 sm:w-11 sm:h-11 rounded-lg text-[9px] sm:text-xs font-bold transition-all duration-200 border flex flex-col items-center justify-center
-                      ${isUnavailable
-                        ? "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200 dark:bg-zinc-900 dark:text-zinc-600 dark:border-zinc-800"
-                        : isSelected
-                        ? "bg-[#10b981] text-white border-[#059669] shadow-[0_0_12px_rgba(16,185,129,0.5)] scale-110"
-                        : "bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400"
-                      }
-                    `}
-                  >
-                    {isUnavailable ? (
-                      <User className="w-5 h-5 sm:w-6 sm:h-6 opacity-40" />
-                    ) : isSelected ? (
-                      <Check className="w-5 h-5 sm:w-6 sm:h-6" />
-                    ) : (
-                      <>
-                        <Armchair className="w-5 h-5 sm:w-6 sm:h-6" />
-                        <span className="text-[7px] sm:text-[8px] mt-0.5">{seatId}</span>
-                      </>
-                    )}
-                  </button>
-                );
-              })}
+            {/* Zone A */}
+            <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone A</h3>
+              <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
+                {ZONE_A_ROWS.map((count, rIdx) => {
+                  const startSeat = 1;
+                  const rowSeats = Array.from({ length: count }, (_, i) => startSeat + i);
+                  return (
+                    <div key={`A-${rIdx}`} className="flex justify-center gap-[2px] sm:gap-1 md:gap-1.5 w-full">
+                      {rowSeats.map((seatNum) => renderSeat(`A${seatNum}`))}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-
-            <div className="w-5 flex items-center justify-center font-bold text-[10px] text-zinc-600 ml-2">{row}</div>
           </div>
-        ))}
+
+          {/* Right Side */}
+          <div className="flex flex-col gap-2 sm:gap-6 w-fit">
+            {/* Zone D */}
+            <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone D</h3>
+              <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
+                {ZONE_D_ROWS.map((count, rIdx) => {
+                  const startSeat = rIdx === 0 ? 1 : rIdx === 1 ? 9 : 19;
+                  const rowSeats = Array.from({ length: count }, (_, i) => startSeat + i);
+                  return (
+                    <div key={`D-${rIdx}`} className="flex justify-center gap-[2px] sm:gap-1 md:gap-1.5 w-full">
+                      {rowSeats.map((seatNum) => renderSeat(`D${seatNum}`))}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Zone B */}
+            <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone B</h3>
+              <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
+                {ZONE_B_ROWS.map((count, rIdx) => {
+                  const startSeat = 1;
+                  const rowSeats = Array.from({ length: count }, (_, i) => startSeat + i);
+                  return (
+                    <div key={`B-${rIdx}`} className="flex justify-center gap-[2px] sm:gap-1 md:gap-1.5 w-full">
+                      {rowSeats.map((seatNum) => renderSeat(`B${seatNum}`))}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex gap-6 mt-6 mb-12 text-xs font-semibold text-zinc-400">
