@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, User, Armchair, Check, Loader2 } from "lucide-react";
+import { ChevronLeft, User, Armchair, Check, Loader2, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useBooking } from "../context/BookingContext";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -84,6 +85,14 @@ export default function SelectPage() {
       </button>
     );
   };
+
+  const totalSeats = ZONE_A_ROWS.reduce((a, b) => a + b, 0) + 
+                     ZONE_B_ROWS.reduce((a, b) => a + b, 0) + 
+                     ZONE_C_ROWS.reduce((a, b) => a + b, 0) + 
+                     ZONE_D_ROWS.reduce((a, b) => a + b, 0);
+                     
+  const bookedSeatsCount = unavailableSeats.length;
+  const availableSeatsCount = totalSeats - bookedSeatsCount;
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4 pt-6 sm:pt-4 animate-in slide-in-from-right-8 duration-300 flex flex-col items-center pb-32">
@@ -184,31 +193,53 @@ export default function SelectPage() {
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-[3px] bg-blue-50 border border-blue-200 flex items-center justify-center">
             <Armchair className="w-2.5 h-2.5 text-blue-600" />
-          </div> ว่าง
+          </div> ว่าง ({availableSeatsCount}/{totalSeats})
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-[3px] bg-[#10b981] border border-[#059669] flex items-center justify-center">
             <Check className="w-2.5 h-2.5 text-white" />
-          </div> เลือกแล้ว
+          </div> เลือกแล้ว ({booking.seats.length})
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-[3px] bg-zinc-100 border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 flex items-center justify-center">
             <User className="w-2.5 h-2.5 text-zinc-400" />
-          </div> เต็มแล้ว
+          </div> เต็มแล้ว ({bookedSeatsCount})
         </div>
       </div>
 
       <div className="mt-16 w-full max-w-4xl flex flex-col items-center">
-        <div className="relative w-full aspect-[4/3] max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900">
-          <Image 
-            src="/seating-plan.png" 
-            alt="นี่คือภาพที่นั่งในโรงละคร" 
-            fill 
-            className="object-cover"
-          />
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="relative w-full aspect-[4/3] max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 cursor-pointer group">
+              <Image 
+                src="/seating-plan2.png" 
+                alt="นี่คือภาพที่นั่งในโรงละคร" 
+                fill 
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <div className="bg-white/90 dark:bg-black/90 p-4 rounded-full shadow-lg backdrop-blur-sm transform transition-transform group-hover:scale-110">
+                  <ZoomIn className="w-8 h-8 text-zinc-900 dark:text-white" />
+                </div>
+              </div>
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-[80vw] p-2 sm:p-4 bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 rounded-xl sm:rounded-2xl">
+            <DialogTitle className="sr-only">ซูมภาพที่นั่ง</DialogTitle>
+            <div className="relative w-full h-[70vh] sm:h-[80vh]">
+              <Image 
+                src="/seating-plan2.png" 
+                alt="นี่คือภาพที่นั่งในโรงละครแบบขยาย" 
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 80vw"
+                priority
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
         <div className="mt-4 px-6 py-3 bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-center">
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">นี่คือภาพจำลองมุมมองของที่นั่งในโรงละครจากด้านบน</p>
+          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">นี่คือภาพจำลองมุมมองของที่นั่งในโรงละครจากด้านบน (คลิกที่ภาพเพื่อซูม)</p>
         </div>
       </div>
 

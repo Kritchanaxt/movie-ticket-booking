@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { PlayCircle, MapPin } from "lucide-react";
+import { Play, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -10,6 +10,23 @@ import { ThemeToggle } from "@/components/theme-toggle";
 export default function Home() {
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPlaying(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isPlaying && videoRef.current) {
+      // Force play when the video element renders
+      videoRef.current.play().catch(error => {
+        console.log("Autoplay was prevented:", error);
+      });
+    }
+  }, [isPlaying]);
 
   return (
     <div className="flex flex-col min-h-[100dvh] relative">
@@ -18,24 +35,25 @@ export default function Home() {
         <ThemeToggle />
       </div>
 
-      <div className="flex-1 w-full max-w-md md:max-w-lg mx-auto p-6 pt-20 sm:pt-6 flex flex-col justify-center gap-8 animate-in fade-in duration-500">
+      <div className="flex-1 w-full max-w-[95%] sm:max-w-[90%] md:max-w-4xl lg:max-w-5xl mx-auto px-2 sm:p-8 pt-20 sm:pt-6 flex flex-col justify-center gap-6 sm:gap-8 animate-in fade-in duration-500">
         <div className="text-center space-y-2 mt-4 sm:mt-0">
           <h1 className="text-4xl font-extrabold tracking-tighter text-zinc-900 dark:text-white drop-shadow-xl mt-4 sm:mt-0">จองที่นั่งละครเวที</h1>
           <p className="text-emerald-600 dark:text-emerald-400 text-base font-medium tracking-wide mt-2">เมื่อเงินจากการปล้นธนาคารถูกซ่อนอยู่ในโลงศพภายในบ้าน ความตาย ความศักดิ์สิทธิ์ และศีลธรรมจึงถูกใช้เป็นเครื่องมือโกหกเพื่อผลประโยชน์ส่วนตัว จนกลายเป็นฉากตลกร้ายที่เต็มไปด้วยความวุ่นวาย</p>
         </div>
         
         <div 
-          className="relative aspect-[4/3] bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] flex items-center justify-center group cursor-pointer ring-1 ring-white/10 dark:ring-white/5"
+          className="relative aspect-[4/3] sm:aspect-[16/10] md:aspect-video bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] flex items-center justify-center group cursor-pointer ring-1 ring-white/10 dark:ring-white/5"
           onClick={() => {
             if (!isPlaying) setIsPlaying(true);
           }}
         >
           {isPlaying ? (
             <video 
-              src="/307065.mp4" 
+              ref={videoRef}
+              src="/10.The TEASER Final.mp4" 
               className="w-full h-full object-cover z-30 bg-black" 
               autoPlay 
-              muted 
+              muted
               controls 
               playsInline
             >
@@ -43,12 +61,7 @@ export default function Home() {
             </video>
           ) : (
             <>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none"></div>
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="w-20 h-20 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:bg-[#10b981]/20 transition-all duration-300">
-                  <PlayCircle className="w-12 h-12 text-[#10b981] group-hover:scale-110 transition-all drop-shadow-lg" />
-                </div>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 sm:to-transparent z-10 pointer-events-none"></div>
               <Image 
                 src="https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=2000&auto=format&fit=crop" 
                 alt="Theatre Background" 
@@ -57,14 +70,13 @@ export default function Home() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover opacity-70 group-hover:opacity-90 transition-all duration-700 group-hover:scale-105" 
               />
-              <div className="absolute bottom-5 left-6 z-20 pr-4">
-                <p className="font-bold text-xl text-white drop-shadow-md mb-1.5">ตัวอย่างการแสดง</p>
-                <p className="text-sm text-zinc-100 font-medium drop-shadow-md mb-2">ละครเวที: The Loot Dead Game 2026 เกมปล้น...คนตาย</p>
-                <p className="text-xs text-zinc-300 flex items-center font-medium drop-shadow-md mb-1.5">
+              <div className="absolute bottom-4 sm:bottom-5 left-4 sm:left-6 z-20 pr-4">
+                <p className="text-xs sm:text-sm text-zinc-100 font-medium drop-shadow-md mb-2">ละครเวที: The Loot Dead Game 2026 เกมปล้น...คนตาย</p>
+                <p className="text-[10px] sm:text-xs text-zinc-300 flex items-center font-medium drop-shadow-md mb-1">
                   กำกับโดย เบญจมาพร อัศดร
                 </p>
-                <p className="text-xs text-zinc-300 flex items-start font-medium drop-shadow-md">
-                  <MapPin className="w-4 h-4 mr-1.5 mt-0.5 shrink-0 text-[#10b981]" /> <span className="leading-relaxed">คณะดนตรีและการแสดงตึก MUPA <br/>โรงละคร Black Box (Ac1)</span>
+                <p className="text-[10px] sm:text-xs text-zinc-300 flex items-start font-medium drop-shadow-md">
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 mt-0.5 shrink-0 text-[#10b981]" /> <span className="leading-relaxed">คณะดนตรีและการแสดงตึก MUPA <br/>โรงละคร Black Box (Ac1)</span>
                 </p>
               </div>
             </>
@@ -85,11 +97,19 @@ export default function Home() {
           <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-400 dark:text-zinc-500 text-center mb-6">
             สนับสนุนโดย
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Placeholder for Sponsor Logos */}
-            <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-full flex items-center justify-center text-[10px] text-zinc-500 font-bold border border-zinc-300 dark:border-zinc-700">Logo 1</div>
-            <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-full flex items-center justify-center text-[10px] text-zinc-500 font-bold border border-zinc-300 dark:border-zinc-700">Logo 2</div>
-            <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-full flex items-center justify-center text-[10px] text-zinc-500 font-bold border border-zinc-300 dark:border-zinc-700">Logo 3</div>
+          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8">
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-white border border-zinc-200 dark:border-white/10 rounded-full overflow-hidden shadow-md">
+              <Image src="/sponsor-bancake.jpg" alt="บ้านเค้กโฮมเมค" fill className="object-contain p-3" />
+            </div>
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-white border border-zinc-200 dark:border-white/10 rounded-full overflow-hidden shadow-md">
+              <Image src="/sponsor-packteam13.jpg" alt="PackTeam13" fill className="object-contain p-4" />
+            </div>
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-white border border-zinc-200 dark:border-white/10 rounded-full overflow-hidden shadow-md">
+              <Image src="/sponsor-flower.jpg" alt="The Petal Project" fill className="object-contain p-3" />
+            </div>
+            <div className="relative h-20 w-20 sm:h-24 sm:w-24 bg-white border border-zinc-200 dark:border-white/10 rounded-full overflow-hidden shadow-md">
+              <Image src="/sponsor-sign.jpg" alt="ป้ายแสนดี" fill className="object-contain p-3" />
+            </div>
           </div>
         </div>
       </div>

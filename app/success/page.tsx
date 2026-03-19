@@ -159,10 +159,19 @@ export default function SuccessPage() {
             {/* Sponsor Logos Section on Ticket */}
             <div style={{ borderTop: `1px solid ${ticketBorder}`, padding: '24px 0 0', marginTop: '4px' }}>
               <p style={{ fontSize: '9px', color: ticketMuted, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '16px' }}>สนับสนุนโดย</p>
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', opacity: 0.6 }}>
-                <div style={{ width: '40px', height: '40px', backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', border: `1px solid ${ticketBorder}` }}>Logo 1</div>
-                <div style={{ width: '40px', height: '40px', backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', border: `1px solid ${ticketBorder}` }}>Logo 2</div>
-                <div style={{ width: '40px', height: '40px', backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', border: `1px solid ${ticketBorder}` }}>Logo 3</div>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
+                <div style={{ width: '40px', height: '40px', backgroundColor: 'white', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${ticketBorder}` }}>
+                  <img src="/sponsor-bancake.jpg" alt="บ้านเค้กโฮมเมค" crossOrigin="anonymous" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                </div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: 'white', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${ticketBorder}` }}>
+                  <img src="/sponsor-packteam13.jpg" alt="PackTeam13" crossOrigin="anonymous" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
+                </div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: 'white', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${ticketBorder}` }}>
+                  <img src="/sponsor-flower.jpg" alt="The Petal Project" crossOrigin="anonymous" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                </div>
+                <div style={{ width: '40px', height: '40px', backgroundColor: 'white', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${ticketBorder}` }}>
+                  <img src="/sponsor-sign.jpg" alt="ป้ายแสนดี" crossOrigin="anonymous" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }} />
+                </div>
               </div>
             </div>
 
