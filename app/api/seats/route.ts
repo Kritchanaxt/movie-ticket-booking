@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 2; // Cache on Server for 2 seconds 
 
 export async function GET() {
   try {
@@ -15,7 +15,7 @@ export async function GET() {
       method: "GET",
       // Google Apps Script มักจะ redirect (302) ไปหน้าถัดไปเพื่อจัดการ JSON
       redirect: "follow",
-      cache: "no-store" 
+      next: { revalidate: 2 } // ค่า cache ของ Next.js ที่ดึงข้อมูลจาก Sheet (2 วินาที)
     });
 
     if (response.ok) {

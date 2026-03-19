@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ChevronLeft, User, Armchair, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -22,9 +23,10 @@ export default function SelectPage() {
   useEffect(() => {
     const fetchBookedSeats = async () => {
       try {
-        // เพิ่ม timestamp หรือ { cache: 'no-store' } ป้องกัน browser จำค่าเก่า
-        const res = await fetch(`/api/seats?t=${new Date().getTime()}`, { 
-          cache: "no-store" 
+        // ดึงข้อมูลจาก API แบบไม่ให้ Browser จำค่า (Bypass Browser Cache)
+        // เพื่อให้เว็บถามหา API ทุกครั้งที่เข้ามาหน้านี้
+        const res = await fetch(`/api/seats?t=${Date.now()}`, {
+          cache: "no-store",
         });
         if (res.ok) {
           const data = await res.json();
@@ -84,8 +86,8 @@ export default function SelectPage() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 animate-in slide-in-from-right-8 duration-300 flex flex-col items-center pb-32">
-      <div className="w-full flex items-center justify-between mb-8 pt-4 px-2">
+    <div className="w-full max-w-2xl mx-auto p-4 pt-6 sm:pt-4 animate-in slide-in-from-right-8 duration-300 flex flex-col items-center pb-32">
+      <div className="w-full flex items-center justify-between mb-8 sm:mb-8 pt-4 px-2">
         <div className="flex items-center text-zinc-900 dark:text-white">
           <button onClick={() => router.push("/")} className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
             <ChevronLeft className="w-6 h-6" />
@@ -98,19 +100,19 @@ export default function SelectPage() {
         <ThemeToggle />
       </div>
 
-      <div className="w-full flex flex-col items-center mb-16 sm:mb-35">
+      <div className="w-full flex-col items-center flex mb-16 sm:mb-20">
         <div className="w-[85%] sm:w-3/4 max-w-lg h-8 border-t-4 border-[#10b981]/50 rounded-t-[100%] shadow-[0_-10px_20px_rgba(16,185,129,0.1)]"></div>
         <p className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] font-medium mt-1">เวที</p>
       </div>
 
-      <div className="w-full flex justify-center px-0.5 sm:px-2 text-zinc-900 dark:text-white pb-24">
+      <div className="w-full flex justify-center px-0.5 sm:px-2 text-zinc-900 dark:text-white pb-6">
         <div className="flex flex-row gap-1.5 sm:gap-4 md:gap-8 w-full max-w-[1200px] justify-center items-start">
           
           {/* Left Side */}
           <div className="flex flex-col gap-2 sm:gap-6 w-fit">
-            {/* Zone C */}
+            {/* โซนC */}
             <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
-              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone C</h3>
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">โซน C</h3>
               <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
                 {ZONE_C_ROWS.map((count, rIdx) => {
                   const startSeat = rIdx === 0 ? 1 : rIdx === 1 ? 8 : 16;
@@ -124,9 +126,9 @@ export default function SelectPage() {
               </div>
             </div>
 
-            {/* Zone A */}
+            {/* โซนA */}
             <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
-              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone A</h3>
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">โซน A</h3>
               <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
                 {ZONE_A_ROWS.map((count, rIdx) => {
                   const startSeat = 1;
@@ -143,9 +145,9 @@ export default function SelectPage() {
 
           {/* Right Side */}
           <div className="flex flex-col gap-2 sm:gap-6 w-fit">
-            {/* Zone D */}
+            {/* โซนD */}
             <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
-              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone D</h3>
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">โซน D</h3>
               <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
                 {ZONE_D_ROWS.map((count, rIdx) => {
                   const startSeat = rIdx === 0 ? 1 : rIdx === 1 ? 9 : 19;
@@ -159,9 +161,9 @@ export default function SelectPage() {
               </div>
             </div>
 
-            {/* Zone B */}
+            {/* โซนB */}
             <div className="flex flex-col gap-1 sm:gap-2 w-full bg-zinc-50 dark:bg-white/[0.02] p-1.5 sm:p-4 lg:p-6 pt-4 sm:pt-8 rounded-[8px] sm:rounded-xl border border-black/5 dark:border-white/5 relative items-center">
-              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">Zone B</h3>
+              <h3 className="absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 text-[8px] sm:text-xs font-semibold px-2 sm:px-3 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded-full">โซน B</h3>
               <div className="flex flex-col gap-1 sm:gap-2 w-full mt-1 sm:mt-2">
                 {ZONE_B_ROWS.map((count, rIdx) => {
                   const startSeat = 1;
@@ -178,7 +180,7 @@ export default function SelectPage() {
         </div>
       </div>
 
-      <div className="flex gap-6 mt-6 mb-12 text-xs font-semibold text-zinc-400">
+      <div className="flex gap-6 mt-2 text-xs font-semibold text-zinc-400">
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-[3px] bg-blue-50 border border-blue-200 flex items-center justify-center">
             <Armchair className="w-2.5 h-2.5 text-blue-600" />
@@ -193,6 +195,20 @@ export default function SelectPage() {
           <div className="w-3.5 h-3.5 rounded-[3px] bg-zinc-100 border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 flex items-center justify-center">
             <User className="w-2.5 h-2.5 text-zinc-400" />
           </div> เต็มแล้ว
+        </div>
+      </div>
+
+      <div className="mt-16 w-full max-w-4xl flex flex-col items-center">
+        <div className="relative w-full aspect-[4/3] max-w-lg rounded-2xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900">
+          <Image 
+            src="/seating-plan.png" 
+            alt="นี่คือภาพที่นั่งในโรงละคร" 
+            fill 
+            className="object-cover"
+          />
+        </div>
+        <div className="mt-4 px-6 py-3 bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-center">
+          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">นี่คือภาพจำลองมุมมองของที่นั่งในโรงละครจากด้านบน</p>
         </div>
       </div>
 

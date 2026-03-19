@@ -10,9 +10,9 @@ import { useEffect } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const SHOW_TIMES = [
-  { date: "20 มีนาคม 2026", time: "16:00" },
-  { date: "21 มีนาคม 2026", time: "16:00" },
-  { date: "22 มีนาคม 2026", time: "15:00" },
+  { date: "20 มีนาคม 2569 รอบที่ 1", time: "16:00" },
+  { date: "21 มีนาคม 2569 รอบที่ 2", time: "16:00" },
+  { date: "22 มีนาคม 2569 รอบที่ 3", time: "15:00" },
 ];
 
 export default function FormPage() {

@@ -80,11 +80,12 @@ export default function DetailPage() {
             <div>
               <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-1">ชื่อละคร</p>
               <p className="font-bold text-lg text-zinc-900 dark:text-white underline decoration-emerald-500/30 underline-offset-4 decoration-2">{booking.movieTitle}</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">กำกับโดย เบญจมาพร อัศดร</p>
             </div>
             <div>
               <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-1">สถานที่</p>
               <p className="font-bold text-sm text-zinc-900 dark:text-white flex items-center">
-                <MapPin className="w-4 h-4 mr-1.5 text-emerald-600 dark:text-emerald-400" /> มหาวิทยาลัยบูรพา ตึก MUPAC
+                <MapPin className="w-4 h-4 mr-1.5 shrink-0 text-emerald-600 dark:text-emerald-400" /> คณะดนตรีและการแสดงตึก MUPA โรงละคร Black Box (Ac1)
               </p>
             </div>
             <div className="flex justify-between">

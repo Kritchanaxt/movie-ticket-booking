@@ -23,7 +23,7 @@ const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 const initialState: BookingState = {
   movieId: "m001",
-  movieTitle: "เกมปล้นคนตาย",
+  movieTitle: "The Loot Dead Game 2026 เกมปล้น...คนตาย",
   date: "",
   time: "",
   seats: [],

@@ -138,8 +138,9 @@ export default function SuccessPage() {
               <p style={{ fontWeight: 'bold', fontSize: '16px', color: ticketText, marginBottom: '12px' }}>{booking.customerName}</p>
               <p style={{ fontSize: '12px', color: ticketMuted, marginBottom: '8px', fontWeight: '500', textTransform: 'uppercase' }}>ละครเวที</p>
               <p style={{ fontWeight: 'bold', fontSize: '24px', lineHeight: '1.2', color: ticketText }}>{booking.movieTitle}</p>
-              <p style={{ fontSize: '12px', color: ticketMuted, marginTop: '6px', display: 'flex', alignItems: 'center' }}>
-                <MapPin className="w-4 h-4 mr-1.5" style={{ color: '#10b981' }} /> มหาวิทยาลัยบูรพา ตึก MUPAC
+              <p style={{ fontSize: '12px', color: ticketMuted, marginTop: '4px' }}>กำกับโดย เบญจมาพร อัศดร</p>
+              <p style={{ fontSize: '12px', color: ticketMuted, marginTop: '6px', display: 'flex', alignItems: 'flex-start' }}>
+                <MapPin className="w-4 h-4 mr-1.5 shrink-0 mt-0.5" style={{ color: '#10b981' }} /> คณะดนตรีและการแสดงตึก MUPA โรงละคร Black Box (Ac1)
               </p>
             </div>
 
@@ -154,13 +155,6 @@ export default function SuccessPage() {
               </div>
             </div>
 
-            {/* QR Code Placeholder */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '16px', opacity: 0.8 }}>
-              <div style={{ width: '128px', height: '128px', backgroundColor: isDark ? '#ffffff' : '#000000', padding: '8px', borderRadius: '12px', marginBottom: '16px' }}>
-                <div style={{ width: '100%', height: '100%', background: isDark ? 'repeating-linear-gradient(45deg,#000,#000 2px,#fff 2px,#fff 4px)' : 'repeating-linear-gradient(45deg,#fff,#fff 2px,#000 2px,#000 4px)' }}></div>
-              </div>
-              <p style={{ fontSize: '10px', color: ticketMuted, fontFamily: 'monospace', letterSpacing: '0.1em' }}>แบบฟอร์มประเมินความพึงพอใจ</p>
-            </div>
 
             {/* Sponsor Logos Section on Ticket */}
             <div style={{ borderTop: `1px solid ${ticketBorder}`, padding: '24px 0 0', marginTop: '4px' }}>

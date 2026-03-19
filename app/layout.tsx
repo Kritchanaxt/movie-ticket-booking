@@ -22,7 +22,7 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: "จองที่นั่งเกมปล้นคนตาย",
+  title: "จองที่นั่ง The Loot Dead Game 2026 เกมปล้น...คนตาย",
   description: "จองตั๋วหนังง่ายๆ ผ่านมือถือ",
 };
 
